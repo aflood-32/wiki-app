@@ -1,0 +1,36 @@
+{
+  "extends": ["airbnb-typescript"],
+  "env": {
+    "browser": true
+  },
+  "plugins": ["react-hooks"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts", ".tsx", ".js"],
+        "paths": ["src"]
+      }
+    }
+  },
+  "rules": {
+    "semi": ["warn"],
+    "react/prop-types": "off",
+    "import/prefer-default-export": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/role-has-required-aria-props": "off",
+    "prefer-promise-reject-errors": "off",
+    "react/jsx-props-no-spreading": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "react/no-unescaped-entities": "off",
+    "react/jsx-no-target-blank": "off",
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 0 }],
+    "no-underscore-dangle": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "max-len": ["warn", { "code": 110 }]
+  }
+}
