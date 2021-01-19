@@ -51,6 +51,8 @@ const ArticleContainer: React.FC = () => {
     return () => window.removeEventListener("scroll", checkScrollPosition);
   }, []);
 
+  console.log(content);
+
   if (loading) {
     return <PageLoader />;
   }
@@ -88,11 +90,22 @@ const ArticleContainer: React.FC = () => {
                   )}
                 >
                   <h5 id={section.title}>{section.title}</h5>
-                  {section.paragraphs?.map((paragraph: any) => {
-                    return paragraph.sentences.map((item: any) =>
-                      getTextContent(item)
-                    );
-                  })}
+                  <div className="article-block__info-block">
+                    {section.images &&
+                      section.images.map((image: any) => (
+                        <div className="article-block__image-container">
+                          <div className="article-block__image-holder">
+                            <img src={image.thumb} alt={image.file} />
+                          </div>
+                          <p>{image.caption}</p>
+                        </div>
+                      ))}
+                    {section.paragraphs?.map((paragraph: any) => {
+                      return paragraph.sentences.map((item: any) =>
+                        getTextContent(item)
+                      );
+                    })}
+                  </div>
                 </section>
               );
             })}

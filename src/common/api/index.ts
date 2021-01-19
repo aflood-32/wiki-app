@@ -28,6 +28,10 @@ export const fetchArticleRequest = async (title: string) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const data = await res.json();
+
+    const images = await wtf(title).images(0);
+    console.log(images);
+
     return data;
   } catch (e) {
     console.error("error", e);
