@@ -2,16 +2,14 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Layout from './common/Layout';
 import MainPage from './views/MainPage';
+import ArticlePage from './views/ArticlePage';
 
 const App = () => (
   <Layout>
     <Switch>
-      <Route path="/test">
-        <div>
-          test
-        </div>
-      </Route>
-      <Route path="/" component={MainPage} />
+      <Route exact path="/" component={MainPage} />
+      <Route path="/article/:title" component={ArticlePage} />
+      <Route path="*" render={() => <h1>Page not found</h1>} />
     </Switch>
   </Layout>
 );

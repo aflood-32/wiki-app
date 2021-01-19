@@ -25,6 +25,110 @@
 //
 
 
+//Main-Page
+.main-page-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.main-page-text{
+  color: $common-grey;
+  padding: 0 10px;
+}
+
+.search{
+  &__header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  &__btns{
+    display: flex;
+    position: absolute;
+    right: 0;
+    top: -100%;
+    transform: translateY(50%);
+  }
+  &__lang-toggler{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:after{
+      content: '';
+      display: block;
+      width: 15px;
+      height: 15px;
+      background: url("../../assets/icons/up-chevron-svgrepo-com.svg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      transform: scale(1, -1);
+      margin-left: 5px;
+    }
+  }
+  &__holder{
+    position: relative;
+  }
+  &__input-holder{
+    position: relative;
+    input{
+      padding: 10px;
+      box-sizing: border-box;
+      border: none;
+      font-size: 30px;
+      width: 100%;
+      min-width: auto;
+    }
+  }
+  &__content{
+    opacity: 0;
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    pointer-events: none;
+    background: #fff;
+    border-radius: 8px;
+    transition: opacity linear .3s;
+    box-shadow: 1px 5px 11px 6px rgba(0,0,0,0.52);
+    overflow-y: auto;
+    ul{
+      list-style: none;
+      padding: 0;
+      margin: 10px 0;
+    }
+    li{
+      //padding: 5px;
+    }
+    li + li{
+      margin-top: 10px;
+    }
+    button{
+      padding: 7px 10px;
+      width: 100%;
+      text-align: left;
+      transition: background linear .3s;
+      &:hover{
+        background: $common-grey;
+      }
+    }
+    span{
+      padding: 7px 10px;
+    }
+    &.active{
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+}
+
+//Main-Page===END
+
+
 @import "partials/media_min_768";
 @import "partials/media_min_1024";
 @import "partials/media_min_1280";
