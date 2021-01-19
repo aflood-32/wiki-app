@@ -1,5 +1,5 @@
-import React from 'react';
-import SearchInput from '../components/SearchInput';
+import React from "react";
+import SearchInput from "../components/SearchInput";
 
 const MainPage = () => (
   <div className="main-page-container">

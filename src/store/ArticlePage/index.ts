@@ -1,72 +1,99 @@
-import { call, takeLatest, put } from 'redux-saga/effects';
-import { searchRequest } from '../../common/api';
-import { IArticle } from '../../common/interfaces';
+import { call, takeLatest, put } from "redux-saga/effects";
+import { fetchArticleRequest } from "../../common/api";
 
 // ACTION TYPES
-const SEARCH_ARTICLE_REQUEST = 'SEARCH_ARTICLE_REQUEST';
-const SEARCH_ARTICLE_SUCCESS = 'SEARCH_ARTICLE_SUCCESS';
-const SEARCH_ARTICLE_FAILURE = 'SEARCH_ARTICLE_FAILURE';
+const GET_ARTICLE_REQUEST = "GET_ARTICLE_REQUEST";
+const GET_ARTICLE_SUCCESS = "GET_ARTICLE_SUCCESS";
+const GET_ARTICLE_FAILURE = "GET_ARTICLE_FAILURE";
+
+const GET_ARTICLE_RESET = "GET_ARTICLE_RESET";
 
 // INTERFACES
-interface ISearchArticlesRequest {
-  type: typeof SEARCH_ARTICLE_REQUEST
-  payload: string
+interface IGetArticleRequest {
+  type: typeof GET_ARTICLE_REQUEST;
+  payload: string;
 }
-interface ISearchArticlesSuccess {
-  type: typeof SEARCH_ARTICLE_SUCCESS
-  payload: any
+interface IGetArticleSuccess {
+  type: typeof GET_ARTICLE_SUCCESS;
+  payload: any;
 }
-interface ISearchArticlesError {
-  type: typeof SEARCH_ARTICLE_FAILURE
-  payload: any
+interface IGetArticleError {
+  type: typeof GET_ARTICLE_FAILURE;
+  payload: any;
 }
-interface IInitialState{
-  term: string
-  loading: boolean
-  articles: IArticle[]
-  error?: any
+interface IGetArticleReset {
+  type: typeof GET_ARTICLE_RESET;
+}
+interface IInitialState {
+  loading: boolean;
+  article: string;
+  error?: any;
 }
 
 // ACTIONS
-export const searchArticlesRequest = (term: string): ISearchArticlesRequest => ({
-  type: SEARCH_ARTICLE_REQUEST,
+export const getArticleRequest = (term: string): IGetArticleRequest => ({
+  type: GET_ARTICLE_REQUEST,
   payload: term,
 });
-const searchArticlesSuccess = (data: any): ISearchArticlesSuccess => ({
-  type: SEARCH_ARTICLE_SUCCESS,
+const getArticleSuccess = (data: any): IGetArticleSuccess => ({
+  type: GET_ARTICLE_SUCCESS,
   payload: data,
 });
 
-const searchArticlesFailure = (error: any): ISearchArticlesError => ({
-  type: SEARCH_ARTICLE_FAILURE,
+const getArticleFailure = (error: any): IGetArticleError => ({
+  type: GET_ARTICLE_FAILURE,
   payload: error,
 });
 
+export const getArticleReset = (): IGetArticleReset => ({
+  type: GET_ARTICLE_RESET,
+});
 
 // REDUCER
 const INITIAL_STATE: IInitialState = {
-  term: '',
   loading: false,
-  articles: [],
+  article: "",
   error: null,
 };
 
-export const ArticlePageReducer = (state = INITIAL_STATE, action: any) :any => {
+export const ArticlePageReducer = (state = INITIAL_STATE, action: any): any => {
   switch (action.type) {
-    default: return state;
+    case GET_ARTICLE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case GET_ARTICLE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        article: action.payload,
+        error: null,
+      };
+    case GET_ARTICLE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: "error",
+      };
+    case GET_ARTICLE_RESET:
+      return INITIAL_STATE;
+    default:
+      return state;
   }
 };
 
 // SAGA
-function* fetchArticle(action: any) {
+function* getArticle(action: any) {
   try {
-    const data = yield call(searchRequest, action.payload);
-    yield put(searchArticlesSuccess(data));
+    const data = yield call(fetchArticleRequest, action.payload);
+    yield put(getArticleSuccess(data));
   } catch (e) {
-    yield put(searchArticlesFailure(e));
+    yield put(getArticleFailure(e));
   }
 }
 
-export function* watchFetchArticles() {
-  yield takeLatest(SEARCH_ARTICLE_REQUEST, fetchArticle);
+export function* watchGetArticle() {
+  yield takeLatest(GET_ARTICLE_REQUEST, getArticle);
 }

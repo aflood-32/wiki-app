@@ -11,7 +11,7 @@ export const debounce = (fn: Function, delay: number): Function => {
     console.log(args, that);
     timeoutID = setTimeout(() => {
       fn.apply(that, args);
-      console.log('delay');
+      console.log("delay");
     }, delay);
   };
 };

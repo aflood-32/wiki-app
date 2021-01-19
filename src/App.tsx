@@ -1,8 +1,8 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import Layout from './common/Layout';
-import MainPage from './views/MainPage';
-import ArticlePage from './views/ArticlePage';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
+import Layout from "./common/Layout";
+import MainPage from "./views/MainPage";
+import ArticlePage from "./views/ArticlePage";
 
 const App = () => (
   <Layout>

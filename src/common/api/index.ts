@@ -1,28 +1,36 @@
-const BASE_API_PATH = 'https://en.wikipedia.org/w/api.php';
+import wtf from "wtf_wikipedia";
+import { IArticle } from "../interfaces";
 
+const BASE_API_PATH = "https://en.wikipedia.org/w/api.php";
 
-export const searchRequest = async (term: string) => {
+export const searchRequest = async (term: string): Promise<IArticle[] | []> => {
   try {
-    const res = await fetch(`${BASE_API_PATH}?origin=*&action=query&list=search&srsearch=${term}&format=json`);
+    const res = await fetch(
+      // eslint-disable-next-line max-len
+      `${BASE_API_PATH}?origin=*&action=query&format=json&prop=pageimages%7Cpageterms&generator=prefixsearch&formatversion=2&piprop=thumbnail&pithumbsize=150&pilimit=10&wbptterms=description&gpssearch=${term}`
+    );
     const data = await res.json();
-    console.log(data);
-    return data.query ? data.query.search : [];
+    return data.query ? data.query.pages : [];
   } catch (e) {
-    console.error('error', e);
     return e;
   }
 };
 
-export const getArticleRequest = async (title: string = 'Pet_door') => {
+export const fetchArticleRequest = async (title: string) => {
   try {
-    const res = await fetch(`${BASE_API_PATH}?origin=*&action=parse&page=${title}&prop=text&formatversion=2&format=json`);
+    // const res = await fetch(
+    //   `${BASE_API_PATH}?origin=*&action=parse&page=${title}&prop=wikitext&formatversion=2&format=json`
+    // );
+    // const data = await res.json();
+    // console.log(data);
+    // return data.parse;
+    const res = await wtf.fetch(title, "en");
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const data = await res.json();
-    console.log(data);
     return data;
   } catch (e) {
-    console.error('error', e);
+    console.error("error", e);
     return e;
   }
 };
-
-getArticleRequest();

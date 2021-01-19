@@ -24,43 +24,42 @@
 //}
 //
 
-
 //Main-Page
-.main-page-container{
+.main-page-container {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
   width: 100%;
-  margin: 0 auto;
+  margin: auto;
 }
 
-.main-page-text{
+.main-page-text {
   color: $common-grey;
   padding: 0 10px;
 }
 
-.search{
-  &__header{
+.search {
+  &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
   }
-  &__btns{
+  &__btns {
     display: flex;
     position: absolute;
     right: 0;
     top: -100%;
     transform: translateY(50%);
   }
-  &__lang-toggler{
+  &__lang-toggler {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    &:after{
-      content: '';
+    &:after {
+      content: "";
       display: block;
       width: 15px;
       height: 15px;
@@ -71,12 +70,12 @@
       margin-left: 5px;
     }
   }
-  &__holder{
+  &__holder {
     position: relative;
   }
-  &__input-holder{
+  &__input-holder {
     position: relative;
-    input{
+    input {
       padding: 10px;
       box-sizing: border-box;
       border: none;
@@ -85,7 +84,7 @@
       min-width: auto;
     }
   }
-  &__content{
+  &__content {
     opacity: 0;
     width: 100%;
     position: absolute;
@@ -93,33 +92,61 @@
     pointer-events: none;
     background: #fff;
     border-radius: 8px;
-    transition: opacity linear .3s;
-    box-shadow: 1px 5px 11px 6px rgba(0,0,0,0.52);
+    transition: opacity linear 0.3s;
+    box-shadow: 1px 5px 11px 6px rgba(0, 0, 0, 0.52);
     overflow-y: auto;
-    ul{
+    max-height: 300px;
+    ul {
       list-style: none;
       padding: 0;
       margin: 10px 0;
     }
-    li{
+    li {
       //padding: 5px;
     }
-    li + li{
+    li + li {
       margin-top: 10px;
     }
-    button{
+    button {
       padding: 7px 10px;
       width: 100%;
       text-align: left;
-      transition: background linear .3s;
-      &:hover{
+      transition: background linear 0.3s;
+      display: flex;
+      & > p {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        span {
+          color: $common-grey;
+          margin-top: 10px;
+          &:empty {
+            display: none;
+          }
+        }
+      }
+      & > img {
+        display: block;
+        width: 100%;
+        max-width: 100px;
+        margin-right: 20px;
+        height: 60px;
+        object-position: center;
+        object-fit: contain;
+      }
+      &:hover {
         background: $common-grey;
+        & > p {
+          span {
+            color: #fff;
+          }
+        }
       }
     }
-    span{
+    & > span {
       padding: 7px 10px;
     }
-    &.active{
+    &.active {
       opacity: 1;
       pointer-events: auto;
     }
@@ -128,6 +155,91 @@
 
 //Main-Page===END
 
+//Article-page
+.article-block {
+  &__row {
+    display: flex;
+    flex-direction: column;
+    padding-top: 60px;
+  }
+  &__col {
+    padding: 30px 15px;
+    &_bg {
+      background: $common-grey;
+      //position: relative;
+    }
+  }
+  &__main-title {
+    text-align: center;
+  }
+
+  &__contents {
+    //position: sticky;
+    top: 0;
+    ul {
+      position: sticky;
+      top: 0;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  &__section {
+    padding: 15px 0;
+    h5 {
+      font-size: 25px;
+      border-bottom: 1px solid $common-grey;
+      padding-bottom: 10px;
+    }
+    &:first-child {
+      padding: 0 0 15px;
+    }
+    //& + & {
+    //  border-top: 1px solid $common-grey;
+    //}
+    &_sub {
+      border-top: 0;
+      padding: 5px 0;
+      border-top: 0 !important;
+      font-size: 15px;
+      h5 {
+        font-size: 20px;
+        border-bottom: 0;
+        margin-bottom: 7px;
+      }
+    }
+    &_deep {
+      font-size: 15px;
+      h5 {
+        border-bottom: 0;
+        font-size: 16px;
+        margin-bottom: 5px;
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  &__related {
+    //display: flex;
+  }
+  &__related-holder {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -10px;
+    .common-link {
+      &:after {
+        content: ",";
+      }
+      &:last-child {
+        &:after {
+          content: none;
+        }
+      }
+    }
+  }
+}
+//Article-page===End
 
 @import "partials/media_min_768";
 @import "partials/media_min_1024";

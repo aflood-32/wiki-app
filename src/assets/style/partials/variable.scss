@@ -1,5 +1,20 @@
 @mixin form-fields {
-  input[type=password], input[type=email], input[type=url], input[type=date], input[type=month], input[type=time], input[type=datetime], input[type=datetime-local], input[type=week], input[type=tel], input[type=color], input[type=number], input[type=search], input[type=text], select, textarea {
+  input[type="password"],
+  input[type="email"],
+  input[type="url"],
+  input[type="date"],
+  input[type="month"],
+  input[type="time"],
+  input[type="datetime"],
+  input[type="datetime-local"],
+  input[type="week"],
+  input[type="tel"],
+  input[type="color"],
+  input[type="number"],
+  input[type="search"],
+  input[type="text"],
+  select,
+  textarea {
     @content;
   }
 }
@@ -16,7 +31,6 @@
   }
 }
 
-
 @mixin appearance-off {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -24,6 +38,5 @@
 }
 
 $primary-black: #1a1a1a;
-$common-grey: #999999;
-$bg-grey: #F8F8F8;
-
+$common-grey: #b7b7b7;
+$bg-grey: #f8f8f8;

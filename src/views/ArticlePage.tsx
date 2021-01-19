@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
+import ArticleContainer from "../components/ArticleContainer";
 
-const ArticlePage = () => (
+const ArticlePage: React.FC = () => (
   <div className="article-page">
-    Article
-    <h1>dasdasd</h1>
+    <ArticleContainer />
   </div>
 );
 

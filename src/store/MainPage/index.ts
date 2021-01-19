@@ -1,57 +1,61 @@
-import { call, takeLatest, put } from 'redux-saga/effects';
-import { searchRequest } from '../../common/api';
-import { IArticle } from '../../common/interfaces';
+import { call, takeLatest, put } from "redux-saga/effects";
+import { searchRequest } from "../../common/api";
+import { IArticle } from "../../common/interfaces";
 
 // ACTION TYPES
-const SEARCH_ARTICLES_REQUEST = 'SEARCH_ARTICLES_REQUEST';
-const SEARCH_ARTICLES_SUCCESS = 'SEARCH_ARTICLES_SUCCESS';
-const SEARCH_ARTICLES_FAILURE = 'SEARCH_ARTICLES_FAILURE';
+const SEARCH_ARTICLES_REQUEST = "SEARCH_ARTICLES_REQUEST";
+const SEARCH_ARTICLES_SUCCESS = "SEARCH_ARTICLES_SUCCESS";
+const SEARCH_ARTICLES_FAILURE = "SEARCH_ARTICLES_FAILURE";
 
 // INTERFACES
 interface ISearchArticlesRequest {
-  type: typeof SEARCH_ARTICLES_REQUEST
-  payload: string
+  type: typeof SEARCH_ARTICLES_REQUEST;
+  payload: string;
 }
 interface ISearchArticlesSuccess {
-  type: typeof SEARCH_ARTICLES_SUCCESS
-  payload: any
+  type: typeof SEARCH_ARTICLES_SUCCESS;
+  payload: IArticle[];
 }
 interface ISearchArticlesError {
-  type: typeof SEARCH_ARTICLES_FAILURE
-  payload: any
+  type: typeof SEARCH_ARTICLES_FAILURE;
+  payload: any;
 }
-interface IInitialState{
-  term: string
-  loading: boolean
-  articles: IArticle[]
-  error?: any
+export interface IInitialState {
+  term: string;
+  loading: boolean;
+  articles: IArticle[];
+  error?: any;
 }
 
 // ACTIONS
-export const searchArticlesRequest = (term: string): ISearchArticlesRequest => ({
+export const searchArticlesRequest = (
+  term: string
+): ISearchArticlesRequest => ({
   type: SEARCH_ARTICLES_REQUEST,
   payload: term,
 });
-const searchArticlesSuccess = (data: any): ISearchArticlesSuccess => ({
+const searchArticlesSuccess = (data: IArticle[]): ISearchArticlesSuccess => ({
   type: SEARCH_ARTICLES_SUCCESS,
   payload: data,
 });
 
-const searchArticlesFailure = (error: any): ISearchArticlesError => ({
+const searchArticlesFailure = (error: string): ISearchArticlesError => ({
   type: SEARCH_ARTICLES_FAILURE,
   payload: error,
 });
 
-
 // REDUCER
 const INITIAL_STATE: IInitialState = {
-  term: '',
+  term: "",
   loading: false,
   articles: [],
   error: null,
 };
 
-export const MainPageReducer = (state = INITIAL_STATE, action: any) :any => {
+export const MainPageReducer = (
+  state = INITIAL_STATE,
+  action: ISearchArticlesSuccess | ISearchArticlesRequest | ISearchArticlesError
+): IInitialState => {
   switch (action.type) {
     case SEARCH_ARTICLES_REQUEST:
       return {
@@ -73,12 +77,13 @@ export const MainPageReducer = (state = INITIAL_STATE, action: any) :any => {
         articles: [],
         error: action.payload,
       };
-    default: return state;
+    default:
+      return state;
   }
 };
 
 // SAGA
-function* fetchArticles(action: any) {
+function* fetchArticles(action: ISearchArticlesRequest) {
   try {
     const data = yield call(searchRequest, action.payload);
     yield put(searchArticlesSuccess(data));
@@ -87,6 +92,6 @@ function* fetchArticles(action: any) {
   }
 }
 
-export function* watchFetchArticles() {
+export function* watchFetchArticles(): Generator {
   yield takeLatest(SEARCH_ARTICLES_REQUEST, fetchArticles);
 }

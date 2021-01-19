@@ -1,9 +1,13 @@
 export interface IArticle {
   ns: number;
-  pageid: number
-  size: number
-  snippet: string
-  timestamp: string
-  title: string
-  wordcount: string
+  pageid: number;
+  terms: {
+    description: Array<string>;
+  };
+  thumbnail: {
+    height: number;
+    source: string;
+    width: number;
+  };
+  title: string;
 }
