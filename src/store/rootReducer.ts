@@ -1,12 +1,12 @@
 import { combineReducers } from "redux";
-import { IInitialState, MainPageReducer } from "./MainPage";
+import { MainPageReducer } from "./MainPage";
 import { ArticlePageReducer } from "./ArticlePage";
+import { LayoutReducer } from "./Layout";
 
-export interface IRootState {
-  mainPage: IInitialState;
-}
-
-export default combineReducers({
+export const rootReducer = combineReducers({
+  layout: LayoutReducer,
   mainPage: MainPageReducer,
   articlePage: ArticlePageReducer,
 });
+
+export type TRootState = ReturnType<typeof rootReducer>;

@@ -18,31 +18,37 @@ interface ISearchArticlesSuccess {
 }
 interface ISearchArticlesError {
   type: typeof SEARCH_ARTICLES_FAILURE;
-  payload: any;
+  payload: string | null;
 }
 export interface IInitialState {
   term: string;
   loading: boolean;
   articles: IArticle[];
-  error?: any;
+  error?: string | null;
 }
 
-// ACTIONS
-export const searchArticlesRequest = (
-  term: string
-): ISearchArticlesRequest => ({
-  type: SEARCH_ARTICLES_REQUEST,
-  payload: term,
-});
-const searchArticlesSuccess = (data: IArticle[]): ISearchArticlesSuccess => ({
-  type: SEARCH_ARTICLES_SUCCESS,
-  payload: data,
-});
+type TActions =
+  | ReturnType<typeof searchArticlesRequest>
+  | ReturnType<typeof searchArticlesSuccess>
+  | ReturnType<typeof searchArticlesFailure>;
 
-const searchArticlesFailure = (error: string): ISearchArticlesError => ({
-  type: SEARCH_ARTICLES_FAILURE,
-  payload: error,
-});
+// ACTIONS
+export const searchArticlesRequest = (term: string): ISearchArticlesRequest =>
+  ({
+    type: SEARCH_ARTICLES_REQUEST,
+    payload: term,
+  } as const);
+const searchArticlesSuccess = (data: IArticle[]): ISearchArticlesSuccess =>
+  ({
+    type: SEARCH_ARTICLES_SUCCESS,
+    payload: data,
+  } as const);
+
+const searchArticlesFailure = (error: string): ISearchArticlesError =>
+  ({
+    type: SEARCH_ARTICLES_FAILURE,
+    payload: error,
+  } as const);
 
 // REDUCER
 const INITIAL_STATE: IInitialState = {
@@ -54,7 +60,7 @@ const INITIAL_STATE: IInitialState = {
 
 export const MainPageReducer = (
   state = INITIAL_STATE,
-  action: ISearchArticlesSuccess | ISearchArticlesRequest | ISearchArticlesError
+  action: TActions
 ): IInitialState => {
   switch (action.type) {
     case SEARCH_ARTICLES_REQUEST:

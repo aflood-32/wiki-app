@@ -16,25 +16,19 @@ export const searchRequest = async (term: string): Promise<IArticle[] | []> => {
   }
 };
 
-export const fetchArticleRequest = async (title: string) => {
+export const fetchArticleRequest = async (
+  title: string
+  // TODO ASK COMRAD MENTOR ABOUT THIS MOMENT
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+): Promise<wtf.Document.json> => {
   try {
-    // const res = await fetch(
-    //   `${BASE_API_PATH}?origin=*&action=parse&page=${title}&prop=wikitext&formatversion=2&format=json`
-    // );
-    // const data = await res.json();
-    // console.log(data);
-    // return data.parse;
-    const res = await wtf.fetch(title, "en");
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const data = await res.json();
-
-    const images = await wtf(title).images(0);
-    console.log(images);
-
-    return data;
+    const res: wtf.Document | null = await wtf.fetch(title, "en");
+    if (res !== null) {
+      return res.json();
+    }
+    throw new Error("Error");
   } catch (e) {
-    console.error("error", e);
     return e;
   }
 };

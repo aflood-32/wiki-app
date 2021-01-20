@@ -5,21 +5,22 @@ import { ReactComponent as MicroIcon } from "../assets/icons/radio-microphone.sv
 import { ReactComponent as KeyboardIcon } from "../assets/icons/keyboard.svg";
 import { searchArticlesRequest } from "../store/MainPage";
 import { IArticle } from "../common/interfaces";
+import { TRootState } from "../store/rootReducer";
 
 const SearchInput: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const articles = useSelector((state: any) => state.mainPage.articles);
-  const loading = useSelector((state: any) => state.mainPage.loading);
+  const articles = useSelector((state: TRootState) => state.mainPage.articles);
+  const loading = useSelector((state: TRootState) => state.mainPage.loading);
   const [term, setTerm] = useState<string>("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = e.target;
     setTerm(value);
     dispatch(searchArticlesRequest(term.trim().toLowerCase()));
   };
 
-  const formatTitle = (title: string) => {
+  const formatTitle = (title: string): string => {
     return title.split(" ").join("_");
   };
 

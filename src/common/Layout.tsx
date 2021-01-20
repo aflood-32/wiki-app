@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Logo from "../assets/images/logo.png";
 
 const Layout: React.FC<React.ReactNode> = ({ children }) => (
   <>
@@ -13,7 +14,8 @@ const Layout: React.FC<React.ReactNode> = ({ children }) => (
           </button>
           <div className="header__logo-holder">
             <Link className="header__logo" to="/">
-              wikipedia
+              <img className="hidden visible-md" src={Logo} alt="main-logo" />
+              <span>wikipedia</span>
             </Link>
           </div>
           <button type="button" className="header__sign-in hidden visible-md">
@@ -21,6 +23,14 @@ const Layout: React.FC<React.ReactNode> = ({ children }) => (
           </button>
         </div>
       </div>
+      {/* <div className="menu-block"> */}
+      {/*  <p>23423</p> */}
+      {/*  <p>23423</p> */}
+      {/*  <p>23423</p> */}
+      {/*  <p>23423</p> */}
+      {/*  <p>23423</p> */}
+      {/*  <p>23423</p> */}
+      {/* </div> */}
     </header>
     <div className="container">{children}</div>
     <footer className="footer">
@@ -30,19 +40,9 @@ const Layout: React.FC<React.ReactNode> = ({ children }) => (
             <div className="footer__links hidden visible-md">
               <ul>
                 <li>
-                  <a href="/">Main version on english</a>
-                </li>
-                <li>
-                  <span>or</span>
-                </li>
-                <li>
-                  <button type="button">Choose your language</button>
-                </li>
-                <li>
-                  <button type="button">mobile view</button>
-                </li>
-                <li>
-                  <a href="/">classic wikipedia</a>
+                  <a href="https://en.wikipedia.org/">
+                    I want to leave this site and visit <b>NORMAL</b> wiki
+                  </a>
                 </li>
               </ul>
             </div>
@@ -50,15 +50,9 @@ const Layout: React.FC<React.ReactNode> = ({ children }) => (
           <div className="footer__section footer__section_lg-xs">
             <div className="footer__history">
               <ul>
-                <li>your history today</li>
+                <li>Your history</li>
                 <li>
                   <a href="/">William 3</a>
-                </li>
-                <li>
-                  <a href="/">Dj Beat</a>
-                </li>
-                <li>
-                  <a href="/">Dmytro Gordon</a>
                 </li>
               </ul>
             </div>

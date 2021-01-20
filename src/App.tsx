@@ -4,7 +4,7 @@ import Layout from "./common/Layout";
 import MainPage from "./views/MainPage";
 import ArticlePage from "./views/ArticlePage";
 
-const App = () => (
+const App: React.FC = () => (
   <Layout>
     <Switch>
       <Route exact path="/" component={MainPage} />
