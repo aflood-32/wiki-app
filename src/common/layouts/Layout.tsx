@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/images/logo.png";
+import History from "../components/History.component";
 
 const Layout: React.FC<React.ReactNode> = ({ children }) => (
   <>
@@ -41,12 +42,7 @@ const Layout: React.FC<React.ReactNode> = ({ children }) => (
           </div>
           <div className="footer__section footer__section_lg-xs">
             <div className="footer__history">
-              <ul>
-                <li>Your history</li>
-                <li>
-                  <a href="/">William 3</a>
-                </li>
-              </ul>
+              <History />
             </div>
           </div>
         </div>

@@ -1,15 +1,16 @@
 import React, { memo } from "react";
-import SwiperCore, { Navigation, Pagination } from "swiper";
+import SwiperCore, { Navigation, Pagination, Lazy } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/swiper.min.css";
 import "swiper/components/navigation/navigation.min.css";
 import "swiper/components/pagination/pagination.min.css";
+import "swiper/components/lazy/lazy.min.css";
 import { useDispatch, useSelector } from "react-redux";
 import { handleGalleryMode } from "../store/ArticlePage";
-import { IImage } from "../common/interfaces";
 import { TRootState } from "../store/rootReducer";
+import { IImage } from "../common/wtf_interfaces";
 
-SwiperCore.use([Navigation, Pagination]);
+SwiperCore.use([Navigation, Pagination, Lazy]);
 
 interface IArticleGalleryProps {
   images: Array<IImage>;
@@ -52,6 +53,7 @@ const ArticleGallery: React.FC<IArticleGalleryProps> = ({
                 }}
                 loop
                 centeredSlides
+                lazy
                 initialSlide={initialSlideIdx}
                 navigation
                 pagination={{

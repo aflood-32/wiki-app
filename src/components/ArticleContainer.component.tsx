@@ -1,28 +1,34 @@
 import React, { memo, useEffect, useMemo, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import wtf from "wtf_wikipedia";
+import Error from "../common/components/Error.component";
 import {
   getArticleRequest,
   getArticleReset,
   handleGalleryMode,
 } from "../store/ArticlePage";
-import PageLoader from "../common/PageLoader";
+import PageLoader from "../common/components/PageLoader.component";
 import ArticleGallery from "./ArticleGallery.component";
 import { TRootState } from "../store/rootReducer";
-import { IImage } from "../common/interfaces";
 import { linkNormalization } from "../common/utils/helpers";
+import {
+  IImage,
+  ISection,
+  ISentence,
+  IParagraph,
+} from "../common/wtf_interfaces";
 
 const ArticleContainer: React.FC = () => {
   const dispatch = useDispatch();
   const params = useParams<{ title: string }>();
   const loading = useSelector((state: TRootState) => state.articlePage.loading);
+  const error = useSelector((state: TRootState) => state.articlePage.error);
   const content = useSelector((state: TRootState) => state.articlePage.article);
   const galleryIdx = useSelector(
     (state: TRootState) => state.articlePage.galleryIdx
   );
   const BASE_WIKI_URL = "https://en.wikipedia.org/wiki";
-  const ref = useRef<HTMLButtonElement>(document.createElement("button"));
+  const ref = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     dispatch(getArticleRequest(params.title));
@@ -31,13 +37,12 @@ const ArticleContainer: React.FC = () => {
     };
   }, [dispatch, params.title]);
 
-  const getTextContent = (sentence: any): JSX.Element => {
-    console.log(wtf);
-    return (
-      <p key={`${sentence.text.split(" ")[0]}_${Math.random()}`}>
-        {sentence.text}
-      </p>
-    );
+  const getTextContent = (sentence: ISentence): JSX.Element => {
+    const splitted = sentence.text.split(" ");
+    const key = `${splitted[0]}_${sentence.text.length}_${
+      splitted[splitted.length - 1]
+    }`;
+    return <p key={key}>{sentence.text}</p>;
   };
 
   useEffect(() => {
@@ -61,17 +66,17 @@ const ArticleContainer: React.FC = () => {
   };
 
   const checkScrollPosition = (): void => {
-    if (window.pageYOffset > window.innerHeight) {
+    if (window.pageYOffset > window.innerHeight && ref.current) {
       ref.current.classList.add("active");
-    } else {
+    } else if (ref.current) {
       ref.current.classList.remove("active");
     }
   };
 
   const galleryData = useMemo((): IImage[] => {
     return content.sections
-      ?.filter((el: any) => el.images)
-      .flatMap((el: any) => el.images);
+      ?.filter((el: ISection) => el.images)
+      .flatMap((el: ISection) => el.images);
   }, [content.sections]);
 
   const getImageIndex = (file: string): number => {
@@ -88,6 +93,9 @@ const ArticleContainer: React.FC = () => {
   if (loading) {
     return <PageLoader />;
   }
+  if (error) {
+    return <Error error={error} />;
+  }
   return (
     <>
       <div className="article-block">
@@ -96,7 +104,7 @@ const ArticleContainer: React.FC = () => {
             <div className="article-block__contents">
               <h3>Contents</h3>
               <ul>
-                {content.sections?.slice(1).map((section: any) => {
+                {content.sections?.slice(1).map((section: ISection) => {
                   return (
                     <li
                       key={section.title.split(" ").reverse().join("_")}
@@ -112,7 +120,7 @@ const ArticleContainer: React.FC = () => {
           <div className="article-block__col">
             <article>
               <h1 className="article-block__main-title">{content.title}</h1>
-              {content.sections?.map((section: any) => {
+              {content.sections?.map((section: ISection) => {
                 return (
                   <section
                     key={linkNormalization(section.title)}
@@ -125,7 +133,10 @@ const ArticleContainer: React.FC = () => {
                     <div className="article-block__info-block">
                       {section.images &&
                         section.images.map((image: IImage) => (
-                          <div className="article-block__image-container">
+                          <div
+                            key={image.file}
+                            className="article-block__image-container"
+                          >
                             <div
                               onClick={() =>
                                 dispatch(
@@ -139,8 +150,8 @@ const ArticleContainer: React.FC = () => {
                             <p>{image.caption}</p>
                           </div>
                         ))}
-                      {section.paragraphs?.map((paragraph: any) => {
-                        return paragraph.sentences.map((item: any) =>
+                      {section.paragraphs?.map((paragraph: IParagraph) => {
+                        return paragraph.sentences.map((item: ISentence) =>
                           getTextContent(item)
                         );
                       })}
@@ -152,7 +163,7 @@ const ArticleContainer: React.FC = () => {
             <section className="article-block__related">
               <p className="label-title">Categories:</p>
               <div className="article-block__related-holder">
-                {content.categories?.map((category: any) => (
+                {content.categories?.map((category: string) => (
                   <a
                     key={category}
                     target="_blank"
@@ -167,7 +178,6 @@ const ArticleContainer: React.FC = () => {
             </section>
           </div>
         </div>
-        {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
         <button
           type="button"
           ref={ref}

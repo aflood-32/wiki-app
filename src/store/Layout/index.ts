@@ -1,38 +1,53 @@
 // // ACTION TYPES
-// // const SEARCH_ARTICLES_REQUEST = "SEARCH_ARTICLES_REQUEST";
-// // const SEARCH_ARTICLES_SUCCESS = "SEARCH_ARTICLES_SUCCESS";
-// // const SEARCH_ARTICLES_FAILURE = "SEARCH_ARTICLES_FAILURE";
-//
+import { getLocalHistory, saveLocalHistory } from "./utils";
+
+const LOAD_HISTORY = "LOAD_HISTORY";
+const SAVE_TO_HISTORY = "SAVE_TO_HISTORY";
+
 // // INTERFACES
-//
-// interface ISearchArticlesError {
-//   type: typeof SEARCH_ARTICLES_FAILURE;
-//   payload: any;
-// }
-export interface IInitialState {
-  menu: boolean;
-  history: any;
+
+interface ILoadHistory {
+  type: typeof LOAD_HISTORY;
 }
-//
-// // ACTIONS
-// export const searchArticlesRequest = (
-//   term: string
-// ): ISearchArticlesRequest => ({
-//   type: SEARCH_ARTICLES_REQUEST,
-//   payload: term,
-// });
-//
+interface ISaveToHistory {
+  type: typeof SAVE_TO_HISTORY;
+  payload: string;
+}
+export interface IInitialState {
+  history: Array<string>;
+}
+type TActions =
+  | ReturnType<typeof loadHistory>
+  | ReturnType<typeof saveToHistory>;
+
+// ACTIONS
+export const loadHistory = (): ILoadHistory => ({
+  type: LOAD_HISTORY,
+});
+export const saveToHistory = (title: string): ISaveToHistory => ({
+  type: SAVE_TO_HISTORY,
+  payload: title,
+});
+
 // // REDUCER
 const INITIAL_STATE: IInitialState = {
-  menu: false,
   history: [],
 };
-//
+
 export const LayoutReducer = (
   state = INITIAL_STATE,
-  action: any
+  action: TActions
 ): IInitialState => {
   switch (action.type) {
+    case LOAD_HISTORY:
+      return {
+        history: getLocalHistory(),
+      };
+    case SAVE_TO_HISTORY:
+      saveLocalHistory(action.payload);
+      return {
+        history: getLocalHistory(),
+      };
     default:
       return state;
   }

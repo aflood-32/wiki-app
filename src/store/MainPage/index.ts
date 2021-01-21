@@ -94,7 +94,7 @@ function* fetchArticles(action: ISearchArticlesRequest) {
     const data = yield call(searchRequest, action.payload);
     yield put(searchArticlesSuccess(data));
   } catch (e) {
-    yield put(searchArticlesFailure(e));
+    yield put(searchArticlesFailure("Something went wrong"));
   }
 }
 

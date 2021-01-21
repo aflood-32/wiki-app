@@ -1,24 +1,36 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import Keyboard from "react-simple-keyboard";
+import "react-simple-keyboard/build/css/index.css";
+import SpeechRecognition from "react-speech-recognition";
 import { ReactComponent as MicroIcon } from "../assets/icons/radio-microphone.svg";
 import { ReactComponent as KeyboardIcon } from "../assets/icons/keyboard.svg";
 import { searchArticlesRequest } from "../store/MainPage";
 import { IArticle } from "../common/interfaces";
 import { TRootState } from "../store/rootReducer";
 import { linkNormalization } from "../common/utils/helpers";
+import { saveToHistory } from "../store/Layout";
+import VoiceRecognition from "../common/components/VoiceRecognition.component";
 
 const SearchInput: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const articles = useSelector((state: TRootState) => state.mainPage.articles);
   const loading = useSelector((state: TRootState) => state.mainPage.loading);
+  const error = useSelector((state: TRootState) => state.mainPage.error);
   const [term, setTerm] = useState<string>("");
+  const [keyboard, setKeyboard] = useState<boolean>(false);
+  const [voice, setVoice] = useState<boolean>(true);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    const { value } = e.target;
+  const handleChange = (value: string): void => {
     setTerm(value);
-    dispatch(searchArticlesRequest(term.trim().toLowerCase()));
+    dispatch(searchArticlesRequest(value.trim().toLowerCase()));
+  };
+
+  const handleLinkClicked = (title: string): void => {
+    dispatch(saveToHistory(title));
+    history.push(`/article/${linkNormalization(title)}`);
   };
 
   return (
@@ -30,14 +42,29 @@ const SearchInput: React.FC = () => {
         <div className="search__input-holder">
           <input
             type="text"
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => handleChange(e.target.value)}
+            value={term}
             placeholder="Search"
           />
           <div className="search__btns">
-            <button className="btn btn_icon" type="button">
-              <MicroIcon fill="#999999" />
-            </button>
-            <button className="btn btn_icon" type="button">
+            {SpeechRecognition.browserSupportsSpeechRecognition() && (
+              <button
+                onClick={() => setVoice(!voice)}
+                className={voice ? "btn btn_icon active" : "btn btn_icon"}
+                type="button"
+              >
+                <MicroIcon fill="#999999" />
+              </button>
+            )}
+            <button
+              onClick={() => setKeyboard(!keyboard)}
+              className={
+                keyboard
+                  ? "btn btn_icon active hidden visible-md"
+                  : "btn btn_icon hidden visible-md"
+              }
+              type="button"
+            >
               <KeyboardIcon fill="#999999" />
             </button>
           </div>
@@ -57,9 +84,7 @@ const SearchInput: React.FC = () => {
                 <li key={item.pageid}>
                   <button
                     type="button"
-                    onClick={() =>
-                      history.push(`/article/${linkNormalization(item.title)}`)
-                    }
+                    onClick={() => handleLinkClicked(item.title)}
                   >
                     <img
                       src={
@@ -76,6 +101,10 @@ const SearchInput: React.FC = () => {
                   </button>
                 </li>
               ))
+            ) : error ? (
+              <li>
+                <span>{error}</span>
+              </li>
             ) : (
               <li>
                 <span>Nothing not found</span>
@@ -85,6 +114,8 @@ const SearchInput: React.FC = () => {
         </div>
       </div>
       <p className="main-page-text">Type what you are looking for...</p>
+      {keyboard && <Keyboard inputName="search" />}
+      {voice && <VoiceRecognition handleChange={handleChange} />}
     </div>
   );
 };

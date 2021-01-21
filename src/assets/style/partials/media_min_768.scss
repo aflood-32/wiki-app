@@ -22,6 +22,7 @@
       align-items: center;
       ul {
         display: flex;
+        flex-wrap: wrap;
         margin: 0;
         width: 100%;
       }
@@ -29,7 +30,7 @@
         margin-left: 0;
       }
       li + li {
-        margin-left: auto;
+        margin-left: 20px;
       }
     }
   }
@@ -109,4 +110,7 @@
     }
   }
   //slider====end
+  .react-simple-keyboard {
+    display: block;
+  }
 }

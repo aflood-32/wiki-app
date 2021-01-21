@@ -1,6 +1,6 @@
 import { call, takeLatest, put } from "redux-saga/effects";
-import wtf from "wtf_wikipedia";
 import { fetchArticleRequest } from "../../common/api";
+import { IDocument } from "../../common/wtf_interfaces";
 
 // ACTION TYPES
 const GET_ARTICLE_REQUEST = "GET_ARTICLE_REQUEST";
@@ -18,7 +18,7 @@ interface IGetArticleRequest {
 }
 interface IGetArticleSuccess {
   type: typeof GET_ARTICLE_SUCCESS;
-  payload: wtf.Document;
+  payload: IDocument;
 }
 interface IGetArticleError {
   type: typeof GET_ARTICLE_FAILURE;
@@ -31,9 +31,18 @@ interface IHandleGalleryMode {
 export interface IGetArticleReset {
   type: typeof GET_ARTICLE_RESET;
 }
+
+type TActions =
+  | ReturnType<typeof getArticleRequest>
+  | ReturnType<typeof getArticleSuccess>
+  | ReturnType<typeof getArticleFailure>
+  | ReturnType<typeof handleGalleryMode>
+  | ReturnType<typeof getArticleReset>;
+
 interface IInitialState {
   loading: boolean;
-  article: string;
+  // IDOCUMENT
+  article: any;
   galleryIdx: number | null;
   error: string | null;
 }
@@ -44,13 +53,13 @@ export const getArticleRequest = (term: string): IGetArticleRequest =>
     type: GET_ARTICLE_REQUEST,
     payload: term,
   } as const);
-const getArticleSuccess = (data: any): IGetArticleSuccess =>
+const getArticleSuccess = (data: IDocument): IGetArticleSuccess =>
   ({
     type: GET_ARTICLE_SUCCESS,
     payload: data,
   } as const);
 
-const getArticleFailure = (error: any): IGetArticleError =>
+const getArticleFailure = (error: string): IGetArticleError =>
   ({
     type: GET_ARTICLE_FAILURE,
     payload: error,
@@ -70,12 +79,15 @@ export const getArticleReset = (): IGetArticleReset =>
 // REDUCER
 const INITIAL_STATE: IInitialState = {
   loading: false,
-  article: "",
+  article: [],
   galleryIdx: null,
   error: null,
 };
 
-export const ArticlePageReducer = (state = INITIAL_STATE, action: any): any => {
+export const ArticlePageReducer = (
+  state = INITIAL_STATE,
+  action: TActions
+): IInitialState => {
   switch (action.type) {
     case GET_ARTICLE_REQUEST:
       return {
@@ -94,7 +106,7 @@ export const ArticlePageReducer = (state = INITIAL_STATE, action: any): any => {
       return {
         ...state,
         loading: false,
-        error: "error",
+        error: action.payload,
       };
     case HANDLE_GALLERY_MODE:
       return {
@@ -114,7 +126,7 @@ function* getArticle(action: IGetArticleRequest) {
     const data = yield call(fetchArticleRequest, action.payload);
     yield put(getArticleSuccess(data));
   } catch (e) {
-    yield put(getArticleFailure(e));
+    yield put(getArticleFailure(e.message));
   }
 }
 

@@ -11,10 +11,3 @@ export interface IArticle {
   };
   title: string;
 }
-
-export interface IImage {
-  file: string;
-  url: string;
-  caption: string;
-  thumb: string;
-}

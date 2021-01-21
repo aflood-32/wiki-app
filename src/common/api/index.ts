@@ -18,8 +18,7 @@ export const fetchArticleRequest = async (
   const res = await wtf.fetch(title, "en");
   if (res !== null) {
     return res.json();
-    // throw new Error("Error");
   }
-  return [];
-  // throw new Error("Error");
+  // return [];
+  throw new Error("Requested article not found");
 };
