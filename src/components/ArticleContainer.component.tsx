@@ -1,15 +1,17 @@
 import React, { memo, useEffect, useMemo, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import wtf from "wtf_wikipedia";
 import {
   getArticleRequest,
   getArticleReset,
   handleGalleryMode,
 } from "../store/ArticlePage";
 import PageLoader from "../common/PageLoader";
-import ArticleGallery from "./ArticleGallery";
+import ArticleGallery from "./ArticleGallery.component";
 import { TRootState } from "../store/rootReducer";
 import { IImage } from "../common/interfaces";
+import { linkNormalization } from "../common/utils/helpers";
 
 const ArticleContainer: React.FC = () => {
   const dispatch = useDispatch();
@@ -29,7 +31,8 @@ const ArticleContainer: React.FC = () => {
     };
   }, [dispatch, params.title]);
 
-  const getTextContent = (sentence: any) => {
+  const getTextContent = (sentence: any): JSX.Element => {
+    console.log(wtf);
     return (
       <p key={`${sentence.text.split(" ")[0]}_${Math.random()}`}>
         {sentence.text}
@@ -112,7 +115,7 @@ const ArticleContainer: React.FC = () => {
               {content.sections?.map((section: any) => {
                 return (
                   <section
-                    key={section.title.split(" ").join("_")}
+                    key={linkNormalization(section.title)}
                     className={getDepthClass(
                       section.depth,
                       "article-block__section"

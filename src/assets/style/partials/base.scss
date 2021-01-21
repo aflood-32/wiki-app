@@ -138,15 +138,6 @@ button {
   }
 }
 
-@keyframes loader {
-  from {
-    left: 0;
-  }
-  to {
-    left: 100%;
-  }
-}
-
 .header {
   position: absolute;
   top: 0;
@@ -507,4 +498,36 @@ button {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.search-loader {
+  display: block;
+  width: 85%;
+  padding: 20px;
+  height: 1px;
+  margin: 0 auto;
+  //background: #000;
+  overflow: hidden;
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    display: block;
+    left: 0;
+    width: 100%;
+    background: #000;
+    top: 50%;
+    height: 2px;
+    z-index: 1;
+  }
+  &:before {
+    @extend .search-loader:after;
+    background: #fff;
+    width: 10%;
+    z-index: 2;
+    animation: loader;
+    animation-fill-mode: both;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
 }

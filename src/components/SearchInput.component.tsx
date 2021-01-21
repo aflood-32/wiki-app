@@ -6,6 +6,7 @@ import { ReactComponent as KeyboardIcon } from "../assets/icons/keyboard.svg";
 import { searchArticlesRequest } from "../store/MainPage";
 import { IArticle } from "../common/interfaces";
 import { TRootState } from "../store/rootReducer";
+import { linkNormalization } from "../common/utils/helpers";
 
 const SearchInput: React.FC = () => {
   const dispatch = useDispatch();
@@ -20,14 +21,10 @@ const SearchInput: React.FC = () => {
     dispatch(searchArticlesRequest(term.trim().toLowerCase()));
   };
 
-  const formatTitle = (title: string): string => {
-    return title.split(" ").join("_");
-  };
-
   return (
     <div className="search__block">
       <div className="search__header">
-        <div className="search__lang-toggler">english</div>
+        <div className="search__lang-toggler disabled">english</div>
       </div>
       <div className="search__holder">
         <div className="search__input-holder">
@@ -53,7 +50,7 @@ const SearchInput: React.FC = () => {
           <ul>
             {loading ? (
               <li>
-                <span>loading</span>
+                <div className="search-loader" />
               </li>
             ) : articles.length > 0 ? (
               articles.map((item: IArticle) => (
@@ -61,7 +58,7 @@ const SearchInput: React.FC = () => {
                   <button
                     type="button"
                     onClick={() =>
-                      history.push(`/article/${formatTitle(item.title)}`)
+                      history.push(`/article/${linkNormalization(item.title)}`)
                     }
                   >
                     <img
@@ -81,7 +78,7 @@ const SearchInput: React.FC = () => {
               ))
             ) : (
               <li>
-                <span>Not found</span>
+                <span>Nothing not found</span>
               </li>
             )}
           </ul>

@@ -1,2 +1,4 @@
 // TODO DEBOUNCE
-export default {};
+export const linkNormalization = (title: string): string => {
+  return title.split(" ").join("_");
+};

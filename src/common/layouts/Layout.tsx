@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Logo from "../assets/images/logo.png";
+import Logo from "../../assets/images/logo.png";
 
 const Layout: React.FC<React.ReactNode> = ({ children }) => (
   <>
@@ -23,14 +23,6 @@ const Layout: React.FC<React.ReactNode> = ({ children }) => (
           </button>
         </div>
       </div>
-      {/* <div className="menu-block"> */}
-      {/*  <p>23423</p> */}
-      {/*  <p>23423</p> */}
-      {/*  <p>23423</p> */}
-      {/*  <p>23423</p> */}
-      {/*  <p>23423</p> */}
-      {/*  <p>23423</p> */}
-      {/* </div> */}
     </header>
     <div className="container">{children}</div>
     <footer className="footer">

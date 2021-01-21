@@ -69,6 +69,10 @@
       transform: scale(1, -1);
       margin-left: 5px;
     }
+    &.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
   &__holder {
     position: relative;
@@ -92,9 +96,9 @@
     top: 100%;
     pointer-events: none;
     background: #fff;
-    border-radius: 8px;
+    border-radius: 0 0 8px 8px;
     transition: opacity linear 0.3s;
-    box-shadow: 1px 5px 11px 6px rgba(0, 0, 0, 0.52);
+    box-shadow: 20px 20px 64px 0 rgba(0, 0, 0, 0.3);
     overflow-y: auto;
     max-height: 300px;
     ul {
@@ -104,10 +108,16 @@
     }
     li {
       //padding: 5px;
+      text-align: center;
+      & > span {
+        padding: 7px 10px;
+        display: block;
+      }
     }
     li + li {
       margin-top: 10px;
     }
+
     button {
       padding: 7px 10px;
       width: 100%;

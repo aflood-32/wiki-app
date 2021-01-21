@@ -55,6 +55,15 @@
   appearance: none;
 }
 
+@keyframes loader {
+  from {
+    left: 0;
+  }
+  to {
+    left: 100%;
+  }
+}
+
 $primary-black: #1a1a1a;
 $common-grey: #b7b7b7;
 $bg-grey: #f8f8f8;
