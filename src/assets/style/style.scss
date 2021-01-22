@@ -169,24 +169,22 @@
       rgba(248, 248, 248, 1) 100%
     );
     &_bg {
-      background: $common-grey;
-      //position: relative;
+      background: #000;
     }
   }
   &__main-title {
-    //text-align: center;
     margin: 0;
   }
 
   &__contents {
-    //position: sticky;
-    top: 0;
+    color: #fff;
     ul {
       position: sticky;
       top: 0;
       list-style: none;
       margin: 0;
       padding: 0;
+      color: #fff;
     }
   }
   &__section {

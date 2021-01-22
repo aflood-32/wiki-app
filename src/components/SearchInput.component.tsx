@@ -21,7 +21,7 @@ const SearchInput: React.FC = () => {
   const error = useSelector((state: TRootState) => state.mainPage.error);
   const [term, setTerm] = useState<string>("");
   const [keyboard, setKeyboard] = useState<boolean>(false);
-  const [voice, setVoice] = useState<boolean>(true);
+  const [voice, setVoice] = useState<boolean>(false);
 
   const handleChange = (value: string): void => {
     setTerm(value);
@@ -36,13 +36,15 @@ const SearchInput: React.FC = () => {
   return (
     <div className="search__block">
       <div className="search__header">
-        <div className="search__lang-toggler disabled">english</div>
+        {/* <div className="search__lang-toggler disabled">english</div> */}
       </div>
       <div className="search__holder">
         <div className="search__input-holder">
           <input
+            id="search"
             type="text"
             onChange={(e) => handleChange(e.target.value)}
+            onInput={() => setKeyboard(false)}
             value={term}
             placeholder="Search"
           />
@@ -60,8 +62,8 @@ const SearchInput: React.FC = () => {
               onClick={() => setKeyboard(!keyboard)}
               className={
                 keyboard
-                  ? "btn btn_icon active hidden visible-md"
-                  : "btn btn_icon hidden visible-md"
+                  ? "btn btn_icon btn_visible-md active"
+                  : "btn btn_icon btn_visible-md"
               }
               type="button"
             >
@@ -114,8 +116,12 @@ const SearchInput: React.FC = () => {
         </div>
       </div>
       <p className="main-page-text">Type what you are looking for...</p>
-      {keyboard && <Keyboard inputName="search" />}
-      {voice && <VoiceRecognition handleChange={handleChange} />}
+      {keyboard && (
+        <Keyboard inputName="search" onChange={(val) => handleChange(val)} />
+      )}
+      {voice && (
+        <VoiceRecognition handleBar={setVoice} handleChange={handleChange} />
+      )}
     </div>
   );
 };

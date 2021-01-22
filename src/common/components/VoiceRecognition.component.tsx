@@ -6,8 +6,9 @@ import { ReactComponent as MicroIcon } from "../../assets/icons/micro.svg";
 
 const VoiceRecognition: React.FC<{
   handleChange: (transcript: string) => void;
-}> = ({ handleChange }) => {
-  const { transcript, resetTranscript } = useSpeechRecognition();
+  handleBar: (param: boolean) => void;
+}> = ({ handleChange, handleBar }) => {
+  const { transcript, resetTranscript, listening } = useSpeechRecognition();
 
   useEffect(() => {
     SpeechRecognition.startListening({ language: "en-GB" });
@@ -21,35 +22,45 @@ const VoiceRecognition: React.FC<{
     SpeechRecognition.startListening({ language: "en-GB" });
   };
 
-  console.log(reset, handleChange, transcript);
+  const apply = (): void => {
+    handleChange(transcript);
+    handleBar(false);
+  };
 
   return (
     <div className="speech-container">
       <div className="speech-container__main">
-        <button type="button" className="micro-btn">
+        <button
+          type="button"
+          className={listening ? "micro-btn animated" : "micro-btn"}
+          onClick={
+            listening
+              ? () => SpeechRecognition.stopListening()
+              : () => SpeechRecognition.startListening()
+          }
+        >
           <MicroIcon />
         </button>
       </div>
-      {/* <div className="speech-container__header"> */}
-      {/*  {transcript && <h5>You mean {transcript} ?</h5>} */}
-      {/*  <button type="button" onClick={() => handleChange(transcript)}> */}
-      {/*    Yes */}
-      {/*  </button> */}
-      {/*  <button type="button" onClick={reset}> */}
-      {/*    No */}
-      {/*  </button> */}
-      {/* </div> */}
-      {/* <div className="speech-container__buttons"> */}
-      {/* <button */}
-      {/*  type="button" */}
-      {/*  onClick={() => SpeechRecognition.startListening()} */}
-      {/* > */}
-      {/*  Start */}
-      {/* </button> */}
-      {/* <button type="button" onClick={SpeechRecognition.stopListening}> */}
-      {/*  Stop */}
-      {/* </button> */}
-      {/* </div> */}
+      <div className="speech-container__body">
+        <h5>
+          You mean <span>{transcript}</span> ?
+        </h5>
+        <div
+          className={
+            transcript
+              ? "speech-container__buttons active"
+              : "speech-container__buttons"
+          }
+        >
+          <button type="button" onClick={apply}>
+            Yes
+          </button>
+          <button type="button" onClick={reset}>
+            No
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

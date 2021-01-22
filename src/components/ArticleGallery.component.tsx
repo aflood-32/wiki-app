@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleGalleryMode } from "../store/ArticlePage";
 import { TRootState } from "../store/rootReducer";
 import { IImage } from "../common/wtf_interfaces";
+import LazyImage from "../common/components/LazyImage.component";
 
 SwiperCore.use([Navigation, Pagination, Lazy]);
 
@@ -67,7 +68,8 @@ const ArticleGallery: React.FC<IArticleGalleryProps> = ({
                   <SwiperSlide key={image.file}>
                     <div className="slider-holder__slide-container">
                       <div className="slider-holder__img-container">
-                        <img src={image.url} alt={image.file} />
+                        {/* <img src={image.url} alt={image.file} /> */}
+                        <LazyImage src={image.url} alt={image.file} />
                       </div>
                       <p>{image.caption}</p>
                     </div>
