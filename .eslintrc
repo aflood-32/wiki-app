@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb-typescript-prettier"],
+  "extends": ["eslint-config-airbnb-typescript-prettier"],
   "env": {
     "browser": true
   },
